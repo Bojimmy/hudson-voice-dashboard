@@ -1,0 +1,7 @@
+{
+  "name": "Gemini Voice Widget",
+  "description": "A compact, reusable voice interface for Gemini 2.5 Flash.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

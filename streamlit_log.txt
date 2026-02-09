@@ -1,0 +1,149 @@
+
+  You can now view your Streamlit app in your browser.
+
+  Local URL: http://localhost:8501
+  Network URL: http://192.168.0.75:8501
+
+  For better performance, install the Watchdog module:
+
+  $ xcode-select --install
+  $ pip install watchdog
+            
+/Users/bobdallavia/open-and-secure/x_security_server.py:58: RuntimeWarning: This package (`duckduckgo_search`) has been renamed to `ddgs`! Use `pip install ddgs` instead.
+  ddgs = DDGS()
+/Users/bobdallavia/open-and-secure/x_security_server.py:58: RuntimeWarning: This package (`duckduckgo_search`) has been renamed to `ddgs`! Use `pip install ddgs` instead.
+  ddgs = DDGS()
+/Users/bobdallavia/open-and-secure/x_security_server.py:58: RuntimeWarning: This package (`duckduckgo_search`) has been renamed to `ddgs`! Use `pip install ddgs` instead.
+  ddgs = DDGS()
+/Users/bobdallavia/open-and-secure/x_security_server.py:58: RuntimeWarning: This package (`duckduckgo_search`) has been renamed to `ddgs`! Use `pip install ddgs` instead.
+  ddgs = DDGS()
+/Users/bobdallavia/open-and-secure/gemini-voice-widget-2/dashboard.py:61: ResourceWarning: unclosed file <_io.TextIOWrapper name='.mission_control/plans/plan_w_kimi.md' mode='r' encoding='UTF-8'>
+  orch_sys = open(".mission_control/plans/plan_w_kimi.md").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/bobdallavia/open-and-secure/gemini-voice-widget-2/dashboard.py:81: ResourceWarning: unclosed file <_io.TextIOWrapper name='.mission_control/team/builder-kimi.md' mode='r' encoding='UTF-8'>
+  builder_sys = open(".mission_control/team/builder-kimi.md").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/bobdallavia/open-and-secure/gemini-voice-widget-2/dashboard.py:82: ResourceWarning: unclosed file <_io.TextIOWrapper name='.mission_control/team/validator-kimi.md' mode='r' encoding='UTF-8'>
+  validator_sys = open(".mission_control/team/validator-kimi.md").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/bobdallavia/open-and-secure/gemini-voice-widget-2/dashboard.py:83: ResourceWarning: unclosed file <_io.TextIOWrapper name='.mission_control/team/sanitizer-kimi.md' mode='r' encoding='UTF-8'>
+  sanitizer_sys = open(".mission_control/team/sanitizer-kimi.md").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/bobdallavia/open-and-secure/gemini-voice-widget-2/dashboard.py:84: ResourceWarning: unclosed file <_io.TextIOWrapper name='.mission_control/team/researcher-kimi.md' mode='r' encoding='UTF-8'>
+  researcher_sys = open(".mission_control/team/researcher-kimi.md").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/bobdallavia/open-and-secure/x_security_server.py:58: RuntimeWarning: This package (`duckduckgo_search`) has been renamed to `ddgs`! Use `pip install ddgs` instead.
+  ddgs = DDGS()
+✅ X-Agent Tools Loaded
+🤖 Kimi is thinking...
+🤖 Kimi is thinking...
+🤖 Kimi is thinking...
+🤖 Kimi is thinking...
+🤖 Kimi is thinking...
+🤖 Kimi is thinking...
+🤖 Kimi is thinking...
+🤖 Kimi is thinking...
+🤖 Kimi is thinking...
+🤖 Kimi is thinking...
+🤖 Kimi is thinking...
+🤖 Kimi is thinking...
+🤖 Kimi is thinking...
+🤖 Kimi is thinking...
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/Users/bobdallavia/.pyenv/versions/3.10.12/lib/python3.10/site-packages/streamlit/ru[0m [31m [0m
+[31m [0m [2mntime/scriptrunner/[0m[1mexec_code.py[0m:129 in exec_func_with_error_handling                 [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/Users/bobdallavia/.pyenv/versions/3.10.12/lib/python3.10/site-packages/streamlit/ru[0m [31m [0m
+[31m [0m [2mntime/scriptrunner/[0m[1mscript_runner.py[0m:672 in code_to_exec                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/Users/bobdallavia/open-and-secure/gemini-voice-widget-2/[0m[1mdashboard.py[0m:232 in         [31m [0m
+[31m [0m <module>                                                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m229 [0m                                                                               [31m [0m
+[31m [0m   [2m230 [0m[2m# --- TRIGGER ---[0m                                                              [31m [0m
+[31m [0m   [2m231 [0m[94mif[0m mission_prompt:                                                             [31m [0m
+[31m [0m [31m❱ [0m232 [2m│   [0masyncio.run(run_visual_loop(mission_prompt))                               [31m [0m
+[31m [0m   [2m233 [0m                                                                               [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/Users/bobdallavia/.pyenv/versions/3.10.12/lib/python3.10/asyncio/[0m[1mrunners.py[0m:44 in   [31m [0m
+[31m [0m run                                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m41 [0m[2m│   │   [0mevents.set_event_loop(loop)                                             [31m [0m
+[31m [0m   [2m42 [0m[2m│   │   [0m[94mif[0m debug [95mis[0m [95mnot[0m [94mNone[0m:                                                   [31m [0m
+[31m [0m   [2m43 [0m[2m│   │   │   [0mloop.set_debug(debug)                                               [31m [0m
+[31m [0m [31m❱ [0m44 [2m│   │   [0m[94mreturn[0m loop.run_until_complete(main)                                    [31m [0m
+[31m [0m   [2m45 [0m[2m│   [0m[94mfinally[0m:                                                                    [31m [0m
+[31m [0m   [2m46 [0m[2m│   │   [0m[94mtry[0m:                                                                    [31m [0m
+[31m [0m   [2m47 [0m[2m│   │   │   [0m_cancel_all_tasks(loop)                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m in uvloop.loop.Loop.run_until_complete:1518                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/Users/bobdallavia/open-and-secure/gemini-voice-widget-2/[0m[1mdashboard.py[0m:117 in         [31m [0m
+[31m [0m run_visual_loop                                                                      [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mpreview_placeholder.code(full_terminal_log, language=[33m"[0m[33mbash[0m[33m"[0m)           [31m [0m
+[31m [0m   [2m115 [0m[2m│   │   [0m                                                                       [31m [0m
+[31m [0m   [2m116 [0m[2m│   │   [0m[2m# Run Agent[0m                                                            [31m [0m
+[31m [0m [31m❱ [0m117 [2m│   │   [0mbuild_result = mission_control.run_kimi([33mf[0m[33m"[0m[33mDo this task: [0m[33m{[0mtask[[33m'[0m[33mtask[0m[33m'[0m][33m}[0m [31m [0m
+[31m [0m   [2m118 [0m[2m│   │   [0m                                                                       [31m [0m
+[31m [0m   [2m119 [0m[2m│   │   [0m[2m# --- X-AGENT TOOL EXECUTION ---[0m                                       [31m [0m
+[31m [0m   [2m120 [0m[2m│   │   [0m[94mif[0m mission_control.X_AGENT_AVAILABLE [95mand[0m [33m"[0m[33mTOOL:[0m[33m"[0m [95min[0m build_result:      [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/Users/bobdallavia/open-and-secure/gemini-voice-widget-2/[0m[1mrun_mission.py[0m:114 in       [31m [0m
+[31m [0m run_kimi                                                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m111 [0m[94mdef[0m[90m [0m[92mrun_kimi[0m(prompt, system_prompt):                                           [31m [0m
+[31m [0m   [2m112 [0m[2;90m│   [0m[33m"""Sends a request to Kimi 2.5"""[0m                                          [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[96mprint[0m([33mf[0m[33m"[0m[33m🤖 Kimi is thinking...[0m[33m"[0m)                                           [31m [0m
+[31m [0m [31m❱ [0m114 [2m│   [0mresponse = kimi_client.chat.completions.create(                            [31m [0m
+[31m [0m   [2m115 [0m[2m│   │   [0mmodel=[33m"[0m[33mmoonshot-v1-128k[0m[33m"[0m,                                              [31m [0m
+[31m [0m   [2m116 [0m[2m│   │   [0mmessages=[                                                             [31m [0m
+[31m [0m   [2m117 [0m[2m│   │   │   [0m{[33m"[0m[33mrole[0m[33m"[0m: [33m"[0m[33msystem[0m[33m"[0m, [33m"[0m[33mcontent[0m[33m"[0m: system_prompt},                      [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/Users/bobdallavia/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/_util[0m [31m [0m
+[31m [0m [2ms/[0m[1m_utils.py[0m:286 in wrapper                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m283 [0m[2m│   │   │   │   │   [0m[94melse[0m:                                                      [31m [0m
+[31m [0m   [2m284 [0m[2m│   │   │   │   │   │   [0mmsg = [33mf[0m[33m"[0m[33mMissing required argument: [0m[33m{[0mquote(missing[[94m0[0m])[33m}[0m [31m [0m
+[31m [0m   [2m285 [0m[2m│   │   │   │   [0m[94mraise[0m [96mTypeError[0m(msg)                                           [31m [0m
+[31m [0m [31m❱ [0m286 [2m│   │   │   [0m[94mreturn[0m func(*args, **kwargs)                                       [31m [0m
+[31m [0m   [2m287 [0m[2m│   │   [0m                                                                       [31m [0m
+[31m [0m   [2m288 [0m[2m│   │   [0m[94mreturn[0m wrapper  [2m# type: ignore[0m                                         [31m [0m
+[31m [0m   [2m289 [0m                                                                               [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/Users/bobdallavia/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/resou[0m [31m [0m
+[31m [0m [2mrces/chat/completions/[0m[1mcompletions.py[0m:1192 in create                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m1189 [0m[2m│   │   [0mtimeout: [96mfloat[0m | httpx.Timeout | [94mNone[0m | NotGiven = not_given,         [31m [0m
+[31m [0m   [2m1190 [0m[2m│   [0m) -> ChatCompletion | Stream[ChatCompletionChunk]:                        [31m [0m
+[31m [0m   [2m1191 [0m[2m│   │   [0mvalidate_response_format(response_format)                             [31m [0m
+[31m [0m [31m❱ [0m1192 [2m│   │   [0m[94mreturn[0m [96mself[0m._post(                                                    [31m [0m
+[31m [0m   [2m1193 [0m[2m│   │   │   [0m[33m"[0m[33m/chat/completions[0m[33m"[0m,                                              [31m [0m
+[31m [0m   [2m1194 [0m[2m│   │   │   [0mbody=maybe_transform(                                             [31m [0m
+[31m [0m   [2m1195 [0m[2m│   │   │   │   [0m{                                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/Users/bobdallavia/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/[0m[1m_base[0m [31m [0m
+[31m [0m [1m_client.py[0m:1294 in post                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m1291 [0m[2m│   │   [0mopts = FinalRequestOptions.construct(                                 [31m [0m
+[31m [0m   [2m1292 [0m[2m│   │   │   [0mmethod=[33m"[0m[33mpost[0m[33m"[0m, url=path, json_data=body, content=content, files=t [31m [0m
+[31m [0m   [2m1293 [0m[2m│   │   [0m)                                                                     [31m [0m
+[31m [0m [31m❱ [0m1294 [2m│   │   [0m[94mreturn[0m cast(ResponseT, [96mself[0m.request(cast_to, opts, stream=stream, str [31m [0m
+[31m [0m   [2m1295 [0m[2m│   [0m                                                                          [31m [0m
+[31m [0m   [2m1296 [0m[2m│   [0m[94mdef[0m[90m [0m[92mpatch[0m(                                                                [31m [0m
+[31m [0m   [2m1297 [0m[2m│   │   [0m[96mself[0m,                                                                 [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/Users/bobdallavia/.pyenv/versions/3.10.12/lib/python3.10/site-packages/openai/[0m[1m_base[0m [31m [0m
+[31m [0m [1m_client.py[0m:1067 in request                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m1064 [0m[2m│   │   │   │   │   [0merr.response.read()                                       [31m [0m
+[31m [0m   [2m1065 [0m[2m│   │   │   │   [0m                                                              [31m [0m
+[31m [0m   [2m1066 [0m[2m│   │   │   │   [0mlog.debug([33m"[0m[33mRe-raising status error[0m[33m"[0m)                          [31m [0m
+[31m [0m [31m❱ [0m1067 [2m│   │   │   │   [0m[94mraise[0m [96mself[0m._make_status_error_from_response(err.response) [94mfro[0m [31m [0m
+[31m [0m   [2m1068 [0m[2m│   │   │   [0m                                                                  [31m [0m
+[31m [0m   [2m1069 [0m[2m│   │   │   [0m[94mbreak[0m                                                             [31m [0m
+[31m [0m   [2m1070 [0m                                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mRateLimitError: [0mError code: [1;36m429[0m - [1m{[0m[32m'error'[0m: [1m{[0m[32m'message'[0m: [32m'The engine is currently [0m
+[32moverloaded, please try again later'[0m, [32m'type'[0m: [32m'engine_overloaded_error'[0m[1m}[0m[1m}[0m
+  Stopping...

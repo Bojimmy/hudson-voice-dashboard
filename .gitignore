@@ -1,0 +1,47 @@
+# Environment variables and secrets
+.env
+.env.local
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Memory and logs
+.studio_memory.json
+security_audit.log
+
+# Generated files
+*.pyc
+direct_solution.py
+task_*.py
+check_*.py
+remember_*.py
+validate_*.py
+x_agent_*.py
+python_version_*.py
+main.py
+# requirements.txt is needed for deployment!
+# requirements.txt
+open_applications_report.txt
+
+# Quarantine
+quarantine/
+
+# Node
+node_modules/
+dist/
+
+# System
+.DS_Store
+
+# Large generated assets (keep repo light)
+*_4k.png
+*_2k.png
+image_*.png
+*.log
+
+# Mission Control local data
+.mission_control/
+.last_project_root

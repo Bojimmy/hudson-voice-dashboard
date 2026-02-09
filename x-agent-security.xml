@@ -1,0 +1,27 @@
+<XAgent version="2.0" domain="security_core">
+    <Policy mode="strict">
+        <!-- Upgrade A: The "Nuclear" Regex for Recursive Deletion -->
+        <!-- Logic: If it has "rm" AND any recursive flag (-r, -R, recursive), it is DEAD. -->
+        <Rule id="NO_RECURSIVE_DELETE" type="deny">
+            <Pattern><![CDATA[rm\s+.*(-r|-R|--recursive).*]]></Pattern>
+            <Error>CRITICAL: Recursive deletion is strictly FORBIDDEN. The "Nuclear" Regex caught you.</Error>
+        </Rule>
+
+        <!-- Upgrade B: The "Whitelist" Strategy -->
+        <!-- Only these specific commands are allowed. Everything else falls through to default block. -->
+        <!-- Note: This list is checked AFTER the deny rules. -->
+        <Rule id="ALLOW_SAFE_CMDS" type="allow">
+            <Allowed>ls</Allowed>
+            <Allowed>pwd</Allowed>
+            <Allowed>cat</Allowed>
+            <Allowed>echo</Allowed>
+            <Allowed>mkdir</Allowed>
+            <Allowed>cd</Allowed>
+            <Allowed>touch</Allowed>
+            <Allowed>grep</Allowed>
+            <Allowed>whoami</Allowed>
+            <Allowed>git</Allowed>
+            <Allowed>python</Allowed>
+        </Rule>
+    </Policy>
+</XAgent>
