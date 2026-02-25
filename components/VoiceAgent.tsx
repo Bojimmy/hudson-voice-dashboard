@@ -390,8 +390,22 @@ const VoiceAgent: React.FC = () => {
                         const assistantText = extractModelText(message);
                         if (assistantText) pushMemoryTurn('assistant', assistantText, 'voice');
 
-                        if (message.serverContent?.modelTurn?.parts?.[0]?.inlineData) {
-                            streamer.addPCM16(base64ToArrayBuffer(message.serverContent.modelTurn.parts[0].inlineData.data));
+                        try {
+                            if (message.serverContent?.modelTurn?.parts) {
+                                message.serverContent.modelTurn.parts.forEach((part: any) => {
+                                    if (part.inlineData && part.inlineData.data) {
+                                        const mimeType = String(part.inlineData.mimeType || '');
+                                        if (mimeType.startsWith('audio/pcm')) {
+                                            const buffer = base64ToArrayBuffer(part.inlineData.data);
+                                            if (buffer.byteLength > 0) {
+                                                streamer.addPCM16(buffer);
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        } catch (audioErr) {
+                            console.error("Audio playback error:", audioErr);
                         }
                         if (message.serverContent?.interrupted) {
                             streamer.stop();
@@ -450,7 +464,13 @@ const VoiceAgent: React.FC = () => {
                             lastBargeInMsRef.current = now;
                         }
                     }
-                    sessionPromise.then((s: any) => s.sendRealtimeInput({ media: { mimeType: 'audio/pcm;rate=16000', data: base64 } }));
+                    sessionPromise.then((s: any) => {
+                        try {
+                            s.sendRealtimeInput({ media: { mimeType: 'audio/pcm;rate=16000', data: base64 } });
+                        } catch (e) {
+                            console.warn("Audio frame drop:", e);
+                        }
+                    });
                 });
                 await recorder.start();
                 recorderRef.current = recorder;
@@ -479,7 +499,13 @@ const VoiceAgent: React.FC = () => {
             try {
                 const sc = new ScreenRecorder((base64) => {
                     if (sessionRef.current) {
-                        sessionRef.current.then((s: any) => s.sendRealtimeInput({ media: { mimeType: 'image/jpeg', data: base64 } }));
+                        sessionRef.current.then((s: any) => {
+                            try {
+                                s.sendRealtimeInput({ media: { mimeType: 'image/jpeg', data: base64 } });
+                            } catch (e) {
+                                console.warn("Screen frame drop:", e);
+                            }
+                        });
                     }
                 });
                 await sc.start();
@@ -507,15 +533,23 @@ const VoiceAgent: React.FC = () => {
                     if (sessionRef.current) {
                         sessionRef.current.then((s: any) => {
                             if (typeof s.sendRealtimeInput === 'function') {
-                                s.sendRealtimeInput({ media: { mimeType: 'image/jpeg', data: base64 } });
+                                try {
+                                    s.sendRealtimeInput({ media: { mimeType: 'image/jpeg', data: base64 } });
+                                } catch (e) {
+                                    console.warn("Camera frame drop:", e);
+                                }
                             } else if (typeof s.sendClientContent === 'function') {
-                                s.sendClientContent({
-                                    turns: [{
-                                        role: "user",
-                                        parts: [{ inlineData: { mimeType: "image/jpeg", data: base64 } }]
-                                    }],
-                                    turnComplete: false
-                                });
+                                try {
+                                    s.sendClientContent({
+                                        turns: [{
+                                            role: "user",
+                                            parts: [{ inlineData: { mimeType: "image/jpeg", data: base64 } }]
+                                        }],
+                                        turnComplete: false
+                                    });
+                                } catch (e) {
+                                    console.warn("Camera frame drop (ClientContent):", e);
+                                }
                             }
                         });
                     }
