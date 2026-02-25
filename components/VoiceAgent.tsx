@@ -478,7 +478,7 @@ const VoiceAgent: React.FC = () => {
         } else {
             try {
                 const sc = new ScreenRecorder((base64) => {
-                    if (sessionRef.current && (!streamerRef.current || !streamerRef.current.isPlaying())) {
+                    if (sessionRef.current) {
                         sessionRef.current.then((s: any) => s.sendRealtimeInput({ media: { mimeType: 'image/jpeg', data: base64 } }));
                     }
                 });
@@ -504,7 +504,7 @@ const VoiceAgent: React.FC = () => {
             }
             try {
                 const crc = new CameraRecorder((base64) => {
-                    if (sessionRef.current && (!streamerRef.current || !streamerRef.current.isPlaying())) {
+                    if (sessionRef.current) {
                         sessionRef.current.then((s: any) => {
                             if (typeof s.sendRealtimeInput === 'function') {
                                 s.sendRealtimeInput({ media: { mimeType: 'image/jpeg', data: base64 } });
