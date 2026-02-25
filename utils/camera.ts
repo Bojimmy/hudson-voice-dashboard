@@ -5,7 +5,7 @@ export class CameraRecorder {
     private ctx: CanvasRenderingContext2D | null;
     private intervalId: number | null = null;
     private onFrame: (base64Jpeg: string) => void;
-    private maxDimension = 1024;
+    private maxDimension = 640;
 
     constructor(onFrame: (base64Jpeg: string) => void) {
         this.onFrame = onFrame;
@@ -27,8 +27,8 @@ export class CameraRecorder {
             this.video.srcObject = this.stream;
             await this.video.play();
 
-            // Capture a frame every 1 second
-            this.intervalId = window.setInterval(() => this.captureFrame(), 1000);
+            // Capture a frame every 2.5 seconds to avoid flooding the Voice API quota
+            this.intervalId = window.setInterval(() => this.captureFrame(), 2500);
         } catch (error) {
             console.error("Camera access denied or failed", error);
             throw error;
