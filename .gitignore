@@ -45,3 +45,6 @@ image_*.png
 # Mission Control local data
 .mission_control/
 .last_project_root
+
+# Worktrees
+.worktrees/

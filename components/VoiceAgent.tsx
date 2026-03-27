@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenAI, Type, FunctionDeclaration, LiveServerMessage, Modality } from "@google/genai";
 import { AudioRecorder, AudioStreamer, base64ToArrayBuffer } from '../utils/audio';
 import { ScreenRecorder } from '../utils/screen';
+import { CameraRecorder } from '../utils/camera';
 import { SYSTEM_INSTRUCTION } from '../utils/knowledge';
 import Visualizer from './Visualizer';
 import { ConnectionStatus } from '../types';
@@ -143,6 +144,7 @@ const VoiceAgent: React.FC = () => {
     const [kimiAvailable, setKimiAvailable] = useState<boolean>(false);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const [isScreenSharing, setIsScreenSharing] = useState(false);
+    const [isCameraSharing, setIsCameraSharing] = useState(false);
     const [generatedImage, setGeneratedImage] = useState<string | null>(null);
     const [showLargeImage, setShowLargeImage] = useState(false);
     const [memoryEnabled, setMemoryEnabled] = useState<boolean>(true);
@@ -150,6 +152,7 @@ const VoiceAgent: React.FC = () => {
 
     const recorderRef = useRef<AudioRecorder | null>(null);
     const screenRecorderRef = useRef<ScreenRecorder | null>(null);
+    const cameraRecorderRef = useRef<CameraRecorder | null>(null);
     const streamerRef = useRef<AudioStreamer | null>(null);
     const lastBargeInMsRef = useRef<number>(0);
     const lastHudsonOverrideMsRef = useRef<number>(0);
@@ -387,8 +390,22 @@ const VoiceAgent: React.FC = () => {
                         const assistantText = extractModelText(message);
                         if (assistantText) pushMemoryTurn('assistant', assistantText, 'voice');
 
-                        if (message.serverContent?.modelTurn?.parts?.[0]?.inlineData) {
-                            streamer.addPCM16(base64ToArrayBuffer(message.serverContent.modelTurn.parts[0].inlineData.data));
+                        try {
+                            if (message.serverContent?.modelTurn?.parts) {
+                                message.serverContent.modelTurn.parts.forEach((part: any) => {
+                                    if (part.inlineData && part.inlineData.data) {
+                                        const mimeType = String(part.inlineData.mimeType || '');
+                                        if (mimeType.startsWith('audio/pcm')) {
+                                            const buffer = base64ToArrayBuffer(part.inlineData.data);
+                                            if (buffer.byteLength > 0) {
+                                                streamer.addPCM16(buffer);
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        } catch (audioErr) {
+                            console.error("Audio playback error:", audioErr);
                         }
                         if (message.serverContent?.interrupted) {
                             streamer.stop();
@@ -447,7 +464,13 @@ const VoiceAgent: React.FC = () => {
                             lastBargeInMsRef.current = now;
                         }
                     }
-                    sessionPromise.then((s: any) => s.sendRealtimeInput({ media: { mimeType: 'audio/pcm;rate=16000', data: base64 } }));
+                    sessionPromise.then((s: any) => {
+                        try {
+                            s.sendRealtimeInput({ media: { mimeType: 'audio/pcm;rate=16000', data: base64 } });
+                        } catch (e) {
+                            console.warn("Audio frame drop:", e);
+                        }
+                    });
                 });
                 await recorder.start();
                 recorderRef.current = recorder;
@@ -476,7 +499,13 @@ const VoiceAgent: React.FC = () => {
             try {
                 const sc = new ScreenRecorder((base64) => {
                     if (sessionRef.current) {
-                        sessionRef.current.then((s: any) => s.sendRealtimeInput({ media: { mimeType: 'image/jpeg', data: base64 } }));
+                        sessionRef.current.then((s: any) => {
+                            try {
+                                s.sendRealtimeInput({ media: { mimeType: 'image/jpeg', data: base64 } });
+                            } catch (e) {
+                                console.warn("Screen frame drop:", e);
+                            }
+                        });
                     }
                 });
                 await sc.start();
@@ -490,11 +519,59 @@ const VoiceAgent: React.FC = () => {
         }
     };
 
+    const toggleCamera = async () => {
+        if (isCameraSharing) {
+            cameraRecorderRef.current?.stop();
+            cameraRecorderRef.current = null;
+            setIsCameraSharing(false);
+        } else {
+            if (isScreenSharing) {
+                await toggleScreenShare();
+            }
+            try {
+                const crc = new CameraRecorder((base64) => {
+                    if (sessionRef.current) {
+                        sessionRef.current.then((s: any) => {
+                            if (typeof s.sendRealtimeInput === 'function') {
+                                try {
+                                    s.sendRealtimeInput({ media: { mimeType: 'image/jpeg', data: base64 } });
+                                } catch (e) {
+                                    console.warn("Camera frame drop:", e);
+                                }
+                            } else if (typeof s.sendClientContent === 'function') {
+                                try {
+                                    s.sendClientContent({
+                                        turns: [{
+                                            role: "user",
+                                            parts: [{ inlineData: { mimeType: "image/jpeg", data: base64 } }]
+                                        }],
+                                        turnComplete: false
+                                    });
+                                } catch (e) {
+                                    console.warn("Camera frame drop (ClientContent):", e);
+                                }
+                            }
+                        });
+                    }
+                });
+                await crc.start();
+                cameraRecorderRef.current = crc;
+                setIsCameraSharing(true);
+            } catch (err) {
+                console.error("Camera Error:", err);
+                setErrorMsg(formatErrorMessage(err, "Camera Access Error"));
+                setIsCameraSharing(false);
+            }
+        }
+    };
+
     const disconnect = () => {
         recorderRef.current?.stop();
         recorderRef.current = null;
         screenRecorderRef.current?.stop();
         screenRecorderRef.current = null;
+        cameraRecorderRef.current?.stop();
+        cameraRecorderRef.current = null;
         if (sessionRef.current) {
             sessionRef.current.then((s: any) => s.close());
             sessionRef.current = null;
@@ -502,6 +579,7 @@ const VoiceAgent: React.FC = () => {
         setStatus('disconnected');
         setIsKimiThinking(false);
         setIsScreenSharing(false);
+        setIsCameraSharing(false);
         setAnalyser(null);
         streamerRef.current?.stop();
     };
@@ -519,12 +597,20 @@ const VoiceAgent: React.FC = () => {
                 </div>
                 {/* Vision Indicator */}
                 {status === 'connected' && (
-                    <button onClick={toggleScreenShare} className={`flex items-center gap-2 transition-all duration-300 ${isScreenSharing ? 'opacity-100' : 'opacity-50 hover:opacity-80'}`}>
-                        <div className={`w-2 h-2 rounded-full transition-all duration-500 ${isScreenSharing ? 'bg-purple-400 shadow-[0_0_10px_rgba(192,132,252,0.8)]' : 'bg-slate-700'}`}></div>
-                        <span className={`text-[8px] font-black uppercase tracking-widest ${isScreenSharing ? 'text-purple-400' : 'text-slate-500'}`}>
-                            Vision {isScreenSharing ? 'Active' : 'Off'}
-                        </span>
-                    </button>
+                    <div className="flex flex-col gap-2 items-end">
+                        <button onClick={toggleScreenShare} className={`flex items-center gap-2 transition-all duration-300 ${isScreenSharing ? 'opacity-100' : 'opacity-50 hover:opacity-80'}`}>
+                            <div className={`w-2 h-2 rounded-full transition-all duration-500 ${isScreenSharing ? 'bg-purple-400 shadow-[0_0_10px_rgba(192,132,252,0.8)]' : 'bg-slate-700'}`}></div>
+                            <span className={`text-[8px] font-black uppercase tracking-widest ${isScreenSharing ? 'text-purple-400' : 'text-slate-500'}`}>
+                                Screen {isScreenSharing ? 'Active' : 'Off'}
+                            </span>
+                        </button>
+                        <button onClick={toggleCamera} className={`flex items-center gap-2 transition-all duration-300 ${isCameraSharing ? 'opacity-100' : 'opacity-50 hover:opacity-80'}`}>
+                            <div className={`w-2 h-2 rounded-full transition-all duration-500 ${isCameraSharing ? 'bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)]' : 'bg-slate-700'}`}></div>
+                            <span className={`text-[8px] font-black uppercase tracking-widest ${isCameraSharing ? 'text-emerald-400' : 'text-slate-500'}`}>
+                                Camera {isCameraSharing ? 'Active' : 'Off'}
+                            </span>
+                        </button>
+                    </div>
                 )}
             </div>
 
@@ -578,8 +664,8 @@ const VoiceAgent: React.FC = () => {
                         {errorMsg}
                     </div>
                 ) : (
-                    <div className={`text-[11px] font-bold tracking-[0.3em] uppercase transition-all duration-500 ${status === 'connected' ? (isScreenSharing ? 'text-purple-400' : 'text-cyan-400') : 'text-slate-600'}`}>
-                        {status === 'connected' ? (isKimiThinking ? 'Executing Kimi Routine' : (isScreenSharing ? 'Vision Link Active' : 'Audio Link Synced')) : 'Antigravity Voice Engine'}
+                    <div className={`text-[11px] font-bold tracking-[0.3em] uppercase transition-all duration-500 ${status === 'connected' ? (isScreenSharing ? 'text-purple-400' : isCameraSharing ? 'text-emerald-400' : 'text-cyan-400') : 'text-slate-600'}`}>
+                        {status === 'connected' ? (isKimiThinking ? 'Executing Kimi Routine' : (isScreenSharing ? 'Screen Link Active' : isCameraSharing ? 'Camera Link Active' : 'Audio Link Synced')) : 'Antigravity Voice Engine'}
                     </div>
                 )}
             </div>

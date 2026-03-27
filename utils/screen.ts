@@ -83,7 +83,7 @@ export class ScreenRecorder {
             } catch (e) {
                 console.error("Frame capture error:", e);
             }
-        }, 1000); // 1 FPS
+        }, 2500); // 1 frame every 2.5 seconds
     }
 
     stop() {
